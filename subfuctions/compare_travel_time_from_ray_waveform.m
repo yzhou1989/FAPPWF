@@ -3,7 +3,7 @@
 
 % all for distance 110 degree
 
-load lon_lat_110.mat
+load lon_lat_110_1.mat
 lon_lat=sortrows12(lon_lat);
 ll_tt=lon_lat(:,1:4);
 % plot_tt(ll_tt);
@@ -21,7 +21,8 @@ dt_wf_ray_ocean=[ll_tt(:,1:2),dt_wf_ray_ocean];
 % plot_tt_gmt(dt_wf_ray_ocean);
 
 dt_wf_ray_noocean=out_tt_noocean(:,3:4)-ll_tt(:,3:4);
-dt_wf_ray_noocean=[ll_tt(:,1:2),dt_wf_ray_noocean];
+dt_wf_ray_noocean=[ll_tt(:,1:2),-dt_wf_ray_noocean]; % + or -
+plot_tt(dt_wf_ray_noocean);
 plot_tt_gmt(dt_wf_ray_noocean);
 
 
@@ -66,10 +67,10 @@ function []=plot_tt_gmt(in)
 
 dt410=in(:,[1,2,3]);
 save('dt410.txt','dt410','-ascii');
-system('sh plot_t_grd dt410.txt');
+% system('bash plot_t_grd dt410.txt');
 
 dt660=in(:,[1,2,4]);
 save('dt660.txt','dt660','-ascii');
-system('sh plot_t_grd dt660.txt');
+% system('bash plot_t_grd dt660.txt');
 
 end

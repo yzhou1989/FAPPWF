@@ -1,47 +1,34 @@
-function [res_t,res_ppwf]=ppwf(gauss_mean,gauss_sigma,p,em,fig_label)
-% ppwf
+function [t,pp_wf]=ppwf_fast(earth_model,p,wf,fs)
+% ppwf_fast
 % compute reflected PP waveform
 %
 % Yong ZHOU
-% zhouy3@sustc.edu.cn
-% 2017-10-21
+% zhouyong@scsio.ac.cn
+% 2020-04-27
 
-earth_model=load(em);
-earth_model=num2cell(earth_model);
+% earth_model=load(em);
 
-% generation of input waveform
-fs=100;
+% generation the time seris
 ts=1/fs;
-ln=8000; % ln=8*time_duration*fs. update 20170915
-t=(0:ln-1)*ts;
+ln=length(wf);
+t=(0:ln-1)*ts';
 
-y=gaussmf(t,[gauss_sigma gauss_mean]);
+[E,E_inv,Lambda_inv]=gen_E_Lambda_inv(p,earth_model);
 
-yf=fft(y);
+yf=fft(wf);
 omiga=fs/2*linspace(0,1,ln/2+1);
 
-omiga_all=[omiga,omiga(end-1:-1:2)];
-omiga_all(1)=1e-16;
-omiga_used=[omiga(1),omiga_all(ln/2:ln)];
+omiga(1)=1e-16;
 
-% pprc=NaN*ones(1,size(yf,2));
-pprc=NaN*ones(size(omiga_used));
-for i_omiga=1:length(omiga_used)
-%     pprc(i_omiga)=pprcm(p,2*pi*omiga_all(i_omiga),earth_model);
-    pprc(i_omiga)=pprcm(p,2*pi*omiga_used(i_omiga),earth_model);
+pprc=NaN*ones(1,size(omiga,2));
+for i_omiga=1:length(omiga)
+    pprc(i_omiga)=pprcm_fast(2*pi*omiga(i_omiga),E,E_inv,Lambda_inv);
 end
 
-ppf=pprc.*[yf(1),yf(ln/2:ln)];
-% ppfm=[ppf(1),conj(ppf(ln:-1:ln/2+2)),ppf(ln/2+1:ln)];
-ppfm=[ppf(1),conj(ppf(ln/2:-1:2)),ppf(1:ln/2)];
+pprc_all=[pprc,pprc(end-1:-1:2)];
+ppf=pprc_all.*yf;
+ppfm=[ppf(1),conj(ppf(ln:-1:ln/2+2)),ppf(ln/2+1:ln)];
 
-pp_wf=ifft(ppfm);
-
-res_t=t(1:ln/2)-gauss_mean;
-res_ppwf=real(pp_wf(1:ln/2));
-
-if strcmp(fig_label,'simple') == 1
-    plot_simple;
-end
+pp_wf=real(ifft(ppfm));
 
 end

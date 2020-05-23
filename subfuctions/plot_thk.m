@@ -22,6 +22,9 @@ plot(dmodel(:,1),dmodel(:,3));
 plot(dmodel(:,1),dmodel(:,4));
 xlabel('Depth (km)');
 legend('boxoff','on');
-legend('Vp (km/s)','Vs (km/s)','Rho (km/s)');
+legend('Vp (km/s)','Vs (km/s)','Rho (10^3Kg/m^3)');
+
+view([90 90])
+set(gca,'YAxisLocation','Right');
 
 end
