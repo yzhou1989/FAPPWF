@@ -6,6 +6,8 @@ function [dmodel]=plot_thk(in_model)
 % 2017-12-05
 
 model=load(in_model);
+model=model.prem;
+
 dmodel=NaN*ones(size(model,1)*2,size(model,2));
 dmodel(2:2:end)=model;
 dmodel(1:2:end)=model;
