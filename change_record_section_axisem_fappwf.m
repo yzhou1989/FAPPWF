@@ -38,5 +38,8 @@ text(-127,154.6,'FAPPWF');
 
 hold off;
 
-fn='record_section_axisem_fappwf_color.eps';
-print(gcf,'-depsc2','-r1200',fn);
+view([90 270]);
+set(gcf,'Position',[0,0,600,500]);
+
+% fn='record_section_axisem_fappwf_color.eps';
+% print(gcf,'-depsc2','-r1200',fn);

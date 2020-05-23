@@ -80,8 +80,7 @@ for i_ocean=1:length(ocean_vek)
 %    tpp=138.75;
    t660=81;
    t410=120.8;
-%    tpp=202.2;
-   tpp=get_thpp(pp_t,ppwf_fil)
+   tpp=202.2;
    [t410,amp410]=tamp_corr(pp_t,ppwf_fil,t410,tpp,twin,'y');
    [t660,amp660]=tamp_corr(pp_t,ppwf_fil,t660,tpp,twin,'y');
    
